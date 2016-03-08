@@ -1,8 +1,8 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 filename=$1
 
-echo '#! /usr/bin/node' > $filename
+echo '#! /usr/bin/env node' > $filename
 echo "" >> $filename
 echo """'use strict'""" >> $filename
 
