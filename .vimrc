@@ -40,6 +40,7 @@ set background=dark
 colorscheme distinguished
 
 set number
+set relativenumber
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -49,7 +50,7 @@ set ruler
 set smarttab
 filetype indent on
 set scrolloff=0
-set nowrap
+"set nowrap
 set ls=2
 set colorcolumn=80
 set incsearch
@@ -59,9 +60,12 @@ set history=1000
 set undolevels=1000
 set nobackup
 set wildmenu
-set textwidth=79
+" set textwidth=79
 set wrap linebreak nolist
 
+" ======= Map Keyes =======
+imap jkl <esc>
+imap jkl; <esc>: 
 " ======= YouCompleteMe ========
 " http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
 let g:ycm_add_preview_to_completeopt=0
