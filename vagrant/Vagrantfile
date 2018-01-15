@@ -1,4 +1,4 @@
-#####################
+###################
 
 # Vagrantfile starts
 
@@ -8,29 +8,109 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    # config.vm.box = "centos/7"
-    config.vm.box = "ubuntu/trusty64"
-    config.vm.provider :virtualbox do |v|
-        v.memory = 4096
-        v.cpus = 4
-        v.customize ["modifyvm", :id, "--nicpromisc2", "allow-all", "--ioapic", "on"]
-    end
 
-    config.vm.network "private_network", ip: "172.31.128.1", virtualbox__intnet: "innet"
+    # Ubuntu-1
+    config.vm.define "major" do |target|
+
+        # config.vm.box = "centos/7"
+        target.vm.box = "ubuntu/trusty64"
+        target.vm.provider :virtualbox do |v|
+            v.memory = 4096
+            v.cpus = 4
+            v.customize ["modifyvm", :id, "--nicpromisc2", "allow-all", "--ioapic", "on"]
+        end
     
-    # ssh able
-    config.ssh.forward_agent = true
+        target.vm.network "private_network", ip: "192.168.20.1", virtualbox__intnet: "intnet"
+        # target.vm.network "private_network", type: "dhcp"
+        
+        # ssh able
+        target.ssh.forward_agent = true
+    
+        # add workspace sharing
+        if ENV['WORKSPACE']
+            target.vm.synced_folder "#{ENV['WORKSPACE']}", "/home/vagrant/src/"
+        end
+    
+        # Install go-lang, git 
+        target.vm.provision :shell, inline: <<-SHELL
+            sudo apt-get -y update
+            sudo apt-get -y install git
+            sudo apt-get -y install nmap
+            sudo ufw disable
+    
+            cd /tmp
+            curl -LO https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+            sudo tar -C /usr/local -zxvf go1.8.3.linux-amd64.tar.gz
+            echo 'export PATH=$PATH:/usr/local/go/bin' >> /home/vagrant/.bashrc
+        SHELL
+    end    
 
-    # add workspace sharing
-    if ENV['WORKSPACE']
-        config.vm.synced_folder "#{ENV['WORKSPACE']}", "/home/vagrant/src/"
+    # Ubuntu-1
+    config.vm.define "ubuntu1" do |target|
+        target.vm.box = "ubuntu/trusty64"
+        target.vm.provider :virtualbox do |v|
+            v.memory = 4096
+            v.cpus = 4
+            v.customize ["modifyvm", :id, "--nicpromisc2", "allow-all", "--ioapic", "on"]
+        end
+    
+        target.vm.network "private_network", ip: "192.168.20.2", virtualbox__intnet: "intnet"
+        # target.vm.network "private_network", type: "dhcp"
+        
+        # ssh able
+        target.ssh.forward_agent = true
+    
+        # add workspace sharing
+        if ENV['WORKSPACE']
+            target.vm.synced_folder "#{ENV['WORKSPACE']}", "/home/vagrant/src/"
+        end
+    
+        # Install go-lang, git 
+        target.vm.provision :shell, inline: <<-SHELL
+            sudo apt-get -y update
+            sudo apt-get -y install git
+            sudo apt-get -y install nmap
+            sudo ufw disable
+    
+            cd /tmp
+            curl -LO https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+            sudo tar -C /usr/local -zxvf go1.8.3.linux-amd64.tar.gz
+            echo 'export PATH=$PATH:/usr/local/go/bin' >> /home/vagrant/.bashrc
+        SHELL
     end
 
-    # Install go-lang
-    config.vm.provision :shell, inline: <<-SHELL
-       cd /tmp
-       curl -LO https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
-       sudo tar -C /usr/local -zxvf go1.8.3.linux-amd64.tar.gz
-       echo 'export PATH=$PATH:/usr/local/go/bin' >> /home/vagrant/.bashrc
-    SHELL
+    config.vm.define "centos1" do |target|
+
+        config.vm.box = "centos/7"
+        target.vm.provider :virtualbox do |v|
+            v.memory = 4096
+            v.cpus = 4
+            v.customize ["modifyvm", :id, "--nicpromisc2", "allow-all", "--ioapic", "on"]
+        end
+    
+        target.vm.network "private_network", ip: "192.168.20.1", virtualbox__intnet: "intnet"
+        # target.vm.network "private_network", type: "dhcp"
+        
+        # ssh able
+        target.ssh.forward_agent = true
+    
+        # add workspace sharing
+        if ENV['WORKSPACE']
+            target.vm.synced_folder "#{ENV['WORKSPACE']}", "/home/vagrant/src/"
+        end
+    
+        # Install go-lang, git 
+        target.vm.provision :shell, inline: <<-SHELL
+            sudo yum -y update
+            sudo yum -y install git
+            sudo yum -y install nmap
+            # sudo ufw disable
+    
+#            cd /tmp
+#            curl -LO https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+#            sudo tar -C /usr/local -zxvf go1.8.3.linux-amd64.tar.gz
+#            echo 'export PATH=$PATH:/usr/local/go/bin' >> /home/vagrant/.bashrc
+        SHELL
+    end    
+
 end
