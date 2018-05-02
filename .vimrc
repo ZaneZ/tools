@@ -30,14 +30,19 @@ Bundle 'scrooloose/syntastic'
 " Autosave, mostly for live syntax with syntastic
 Bundle '907th/vim-auto-save'
 
+" vim-go
+Plugin 'fatih/vim-go'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+" Enable filetype plugins 
+filetype plugin on
 
 " Configure the Color
 set t_Co=256
 syntax on
 set background=dark
-colorscheme distinguished
+colorscheme basic-dark 
 
 set number
 set relativenumber
@@ -62,10 +67,10 @@ set nobackup
 set wildmenu
 " set textwidth=79
 set wrap linebreak nolist
+set backspace=indent,eol,start
 
 " ======= Map Keyes =======
 imap jkl <esc>
-imap jkl; <esc>: 
 " ======= YouCompleteMe ========
 " http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
 let g:ycm_add_preview_to_completeopt=0
