@@ -14,6 +14,10 @@ Plugin 'jelera/vim-javascript-syntax'
 Plugin 'pangloss/vim-javascript'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'Raimondi/delimitMate'
+Plugin 'fatih/vim-go'
+
+" JShint
+" Plugin "wookiehangover/jshint"
 
 " Powerline
 Plugin 'bling/vim-airline'
@@ -30,20 +34,16 @@ Bundle 'scrooloose/syntastic'
 " Autosave, mostly for live syntax with syntastic
 Bundle '907th/vim-auto-save'
 
-" vim-go
-Plugin 'fatih/vim-go'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-
-" Enable filetype plugins 
-filetype plugin on
 
 " Configure the Color
 set t_Co=256
 syntax on
 set background=dark
-colorscheme basic-dark 
-
+" colorscheme distinguished
+colorscheme basic-dark
+set encoding=utf-8
 set number
 set relativenumber
 set tabstop=4
@@ -70,7 +70,8 @@ set wrap linebreak nolist
 set backspace=indent,eol,start
 
 " ======= Map Keyes =======
-imap jkl <esc>
+imap jk <esc>
+
 " ======= YouCompleteMe ========
 " http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
 let g:ycm_add_preview_to_completeopt=0
@@ -96,3 +97,11 @@ let g:auto_save = 0  " disable AutoSave on Vim startup
 let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
 let g:auto_save_events = ["TextChanged"]
 let g:auto_save_no_updatetime = 1  " do not change the 'updatetime' option"
+
+" ======= Go-lang =============
+" Highlight
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1  
